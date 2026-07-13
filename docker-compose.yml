@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+
+    volumes:
+      - minio_data:/data
+
+  airflow:
+    build:
+      context: .
+      dockerfile: docker/airflow/Dockerfile
+
+    container_name: airflow
+
+    depends_on:
+      - minio
+
+    env_file:
+      - .env
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./src:/opt/airflow/src
+      - ./data:/opt/airflow/data
+
+    command: standalone
+
+volumes:
+  minio_data:

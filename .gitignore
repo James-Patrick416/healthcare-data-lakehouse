@@ -56,3 +56,12 @@ data/gold/
 # OS
 .DS_Store
 Thumbs.db
+
+# Airflow generated files
+logs/
+config/
+plugins/
+
+# Python cache
+__pycache__/
+*.pyc

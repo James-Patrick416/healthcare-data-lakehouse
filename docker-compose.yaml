@@ -53,7 +53,7 @@ x-airflow-common:
   # Use our custom Airflow image
   build:
     context: .
-    dockerfile: Dockerfile
+    dockerfile: docker/airflow/Dockerfile
 
   image: healthcare-data-lakehouse:latest
 

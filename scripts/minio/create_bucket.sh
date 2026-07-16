@@ -1,17 +1,18 @@
 #!/bin/sh
 
-# ----------------------------------------------------------
-# Create the Healthcare Data Lakehouse bucket in MinIO.
-# This script is idempotent, so it is safe to run multiple
-# times.
-# ----------------------------------------------------------
-
 set -e
 
-# Configure the MinIO client
-mc alias set local http://minio:9000 minioadmin minioadmin
+# Configure MinIO client
+mc alias set local http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}
 
-# Create the bucket if it does not already exist
-mc mb --ignore-existing local/healthcare-lakehouse
+# Create the bucket
+mc mb --ignore-existing local/${MINIO_BUCKET}
 
-echo "Bucket healthcare-lakehouse is ready."
+# Create Bronze layer prefixes
+touch /tmp/.keep
+
+mc cp /tmp/.keep local/${MINIO_BUCKET}/bronze/encounters/.keep
+mc cp /tmp/.keep local/${MINIO_BUCKET}/bronze/patients/.keep
+mc cp /tmp/.keep local/${MINIO_BUCKET}/bronze/providers/.keep
+
+echo "Bronze layer initialized."

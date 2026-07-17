@@ -19,3 +19,12 @@ BRONZE_LOCAL_DIR = PROJECT_ROOT / "data" / "bronze"
 PATIENTS_CSV = SAMPLE_DATA_DIR / "patients.csv"
 ENCOUNTERS_CSV = SAMPLE_DATA_DIR / "encounters.csv"
 PROVIDERS_CSV = SAMPLE_DATA_DIR / "providers.csv"
+
+# =============================================================================
+# MinIO Configuration
+# =============================================================================
+
+MINIO_ENDPOINT = "localhost:9000"
+MINIO_ACCESS_KEY = "minioadmin"
+MINIO_SECRET_KEY = "minioadmin"
+MINIO_BUCKET = "healthcare-lakehouse"

@@ -9,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 from healthcare_data_lakehouse.ingestion.readers import read_csv
+from healthcare_data_lakehouse.storage.minio_client import MinIOClient
 
 
 def csv_to_parquet(csv_path: Path, output_path: Path) -> None:
@@ -19,7 +20,6 @@ def csv_to_parquet(csv_path: Path, output_path: Path) -> None:
     ----------
     csv_path : Path
         Source CSV file.
-
     output_path : Path
         Destination Parquet file.
     """
@@ -35,4 +35,13 @@ def csv_to_parquet(csv_path: Path, output_path: Path) -> None:
         index=False,
     )
 
+    # Upload Bronze dataset to MinIO
+    client = MinIOClient()
+
+    client.upload_file(
+        object_name="bronze/patients/patients.parquet",
+        file_path=str(output_path),
+    )
+
+    print("Uploaded Bronze dataset to MinIO.")
     print(f"Created {output_path}")
